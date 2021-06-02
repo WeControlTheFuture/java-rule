@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -9,16 +10,18 @@
 
 	<properties>
 		<java.plugin.version>3.13.1</java.plugin.version>
+		<sonarqube.version>8.9.0.43852</sonarqube.version>
+		<sonarjava.version>6.15.1.26025</sonarjava.version>
 	</properties>
-	
+
 	<name>Lenovo Java Custom Rules</name>
 	<description>Lenovo Java Custom Rules</description>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.codehaus.sonar</groupId>
+			<groupId>org.sonarsource.sonarqube</groupId>
 			<artifactId>sonar-plugin-api</artifactId>
-			<version>4.5.6</version>
+			<version>${sonarqube.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -26,59 +29,63 @@
 			<groupId>org.sonarsource.java</groupId>
 			<artifactId>sonar-java-plugin</artifactId>
 			<type>sonar-plugin</type>
-			<version>${java.plugin.version}</version>
+			<version>${sonarjava.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.sonarsource.java</groupId>
-			<artifactId>java-frontend</artifactId>
-			<version>${java.plugin.version}</version>
+			<groupId>org.sonarsource.analyzer-commons</groupId>
+			<artifactId>sonar-analyzer-commons</artifactId>
+			<version>1.14.1.690</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.sonarsource.sslr-squid-bridge</groupId>
-			<artifactId>sslr-squid-bridge</artifactId>
-			<version>2.6.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.sonar.sslr</groupId>
-					<artifactId>sslr-core</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
+		<!-- TEST sources dependencies -->
 		<dependency>
 			<groupId>org.sonarsource.java</groupId>
 			<artifactId>java-checks-testkit</artifactId>
-			<version>${java.plugin.version}</version>
+			<version>${sonarjava.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- version to be specified manually -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.7.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- version to be specified manually -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-migrationsupport</artifactId>
+			<version>5.7.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- version to be specified manually -->
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.19.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.codehaus.sonar.sslr</groupId>
-			<artifactId>sslr-testing-harness</artifactId>
-			<version>1.19.2</version>
-			<scope>test</scope>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.3</version>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.easytesting</groupId>
-			<artifactId>fest-assert</artifactId>
-			<version>1.4</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>0.9.30</version>
-			<scope>test</scope>
-		</dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>29.0-jre</version>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -86,10 +93,15 @@
 			<plugin>
 				<groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
 				<artifactId>sonar-packaging-maven-plugin</artifactId>
-				<version>1.15</version>
+				<version>1.20.0.405</version>
 				<extensions>true</extensions>
 				<configuration>
+					<pluginKey>java-custom</pluginKey>
+					<pluginName>Java Custom Rules</pluginName>
 					<pluginClass>com.lenovo.sonar.LenovoHybrisJavaRulesPlugin</pluginClass>
+					<sonarLintSupported>true</sonarLintSupported>
+					<sonarQubeMinVersion>${sonarqube.version}</sonarQubeMinVersion>
+					<requirePlugins>java:${sonarjava.version}</requirePlugins>
 				</configuration>
 			</plugin>
 
@@ -98,8 +110,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>

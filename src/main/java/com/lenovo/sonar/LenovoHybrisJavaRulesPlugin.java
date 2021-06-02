@@ -5,23 +5,18 @@
  */
 package com.lenovo.sonar;
 
-import java.util.Arrays;
-import java.util.List;
+import org.sonar.api.Plugin;
 
-import org.sonar.api.SonarPlugin;
 
 /**
  * Entry point of plugin
  */
-public class LenovoHybrisJavaRulesPlugin extends SonarPlugin {
+public class LenovoHybrisJavaRulesPlugin implements Plugin {
 
-  @Override
-  public List getExtensions() {
-    return Arrays.asList(
-      // server extensions -> objects are instantiated during server startup
-      LenovoHybrisJavaRulesDefinition.class,
-
-      // batch extensions -> objects are instantiated during code analysis
-      LenovoHybrisJavaFileCheckRegistrar.class);
-  }
+@Override
+public void define(Context context) {
+	// TODO Auto-generated method stub
+	context.addExtension(LenovoHybrisJavaRulesDefinition.class);
+	context.addExtension(LenovoHybrisJavaFileCheckRegistrar.class);
+}
 }

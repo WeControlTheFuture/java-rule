@@ -1,0 +1,12 @@
+<p>Remove empty statement after if</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+public void foo() { // Noncompliant
+	int a = 2;
+	if(a==1);
+}
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+remove ; or if(a==1);
+</pre>

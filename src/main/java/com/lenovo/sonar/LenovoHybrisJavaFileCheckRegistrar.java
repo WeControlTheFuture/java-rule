@@ -1,11 +1,9 @@
 package com.lenovo.sonar;
 
-import java.util.Arrays;
+import java.util.List;
 
 import org.sonar.plugins.java.api.CheckRegistrar;
 import org.sonar.plugins.java.api.JavaCheck;
-
-import com.lenovo.sonar.rules.HybrisLayerCodingRule;
 
 /**
  * Provide the "checks" (implementations of rules) classes that are gonna be
@@ -24,7 +22,7 @@ public class LenovoHybrisJavaFileCheckRegistrar implements CheckRegistrar {
 	public void register(RegistrarContext registrarContext) {
 		// Call to registerClassesForRepository to associate the classes with
 		// the correct repository key
-		registrarContext.registerClassesForRepository(LenovoHybrisJavaRulesDefinition.REPOSITORY_KEY, Arrays.asList(checkClasses()), Arrays.asList(testCheckClasses()));
+		registrarContext.registerClassesForRepository(LenovoHybrisJavaRulesDefinition.REPOSITORY_KEY, checkClasses(), testCheckClasses());
 	}
 
 	/**
@@ -32,8 +30,8 @@ public class LenovoHybrisJavaFileCheckRegistrar implements CheckRegistrar {
 	 * 
 	 * @return Class<? extends JavaCheck>[]
 	 */
-	public static Class<? extends JavaCheck>[] checkClasses() {
-		return new Class[] { HybrisLayerCodingRule.class };
+	public static List<Class<? extends JavaCheck>> checkClasses() {
+		return RulesList.getJavaChecks();
 	}
 
 	/**
@@ -41,7 +39,7 @@ public class LenovoHybrisJavaFileCheckRegistrar implements CheckRegistrar {
 	 * 
 	 * @return Class<? extends JavaCheck>[]
 	 */
-	public static Class<? extends JavaCheck>[] testCheckClasses() {
-		return new Class[] {};
+	public static List<Class<? extends JavaCheck>> testCheckClasses() {
+		return RulesList.getJavaTestChecks();
 	}
 }
